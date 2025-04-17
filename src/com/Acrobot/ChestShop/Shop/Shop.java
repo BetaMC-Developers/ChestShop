@@ -5,9 +5,6 @@ import com.Acrobot.ChestShop.Chests.ChestObject;
 import com.Acrobot.ChestShop.Config.Config;
 import com.Acrobot.ChestShop.Config.Language;
 import com.Acrobot.ChestShop.Config.Property;
-import com.Acrobot.ChestShop.Data.ShopLocation;
-import com.Acrobot.ChestShop.Data.Shops;
-import com.Acrobot.ChestShop.Data.UUIDCache;
 import com.Acrobot.ChestShop.Economy;
 import com.Acrobot.ChestShop.Items.Items;
 import com.Acrobot.ChestShop.Logging.Logging;
@@ -17,7 +14,6 @@ import com.Acrobot.ChestShop.Utils.uNumber;
 import com.Acrobot.ChestShop.Utils.uLocation;
 import com.Acrobot.ChestShop.Utils.uLongName;
 import com.Acrobot.ChestShop.Utils.uSign;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -41,7 +37,6 @@ public class Shop {
 
     public final Sign sign;
     public final World world;
-    public final Location signLocation;
 
     public Shop(ChestObject chest, boolean buy, Sign sign, ItemStack... itemStacks) {
         this.stock = itemStacks[0];
@@ -63,11 +58,6 @@ public class Shop {
         if (chest == null && !isAdminShop()) {
             player.sendMessage(Config.getLocal(Language.NO_CHEST_DETECTED));
             return;
-        }
-
-        UUID uuid = UUIDCache.lookupUUID(uLongName.getName(owner));
-        if (uuid != null) {
-            Shops.put(new ShopLocation(signLocation), uuid);
         }
 
         if (buyPrice == -1) {
@@ -136,11 +126,6 @@ public class Shop {
         if (chest == null && !isAdminShop()) {
             player.sendMessage(Config.getLocal(Language.NO_CHEST_DETECTED));
             return;
-        }
-
-        UUID uuid = UUIDCache.lookupUUID(uLongName.getName(owner));
-        if (uuid != null) {
-            Shops.put(new ShopLocation(signLocation), uuid);
         }
 
         if (sellPrice == -1) {
