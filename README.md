@@ -1,2 +1,2 @@
 # ChestShop
-A version of ChestShop updated for RetroMC and BetaLands
+A version of ChestShop updated for BetaMC
