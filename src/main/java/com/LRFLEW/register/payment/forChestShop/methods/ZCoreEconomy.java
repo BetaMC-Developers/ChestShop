@@ -23,7 +23,7 @@ public class ZCoreEconomy implements Method {
     }
 
     public String getVersion() {
-        return ZCore.getVersion().toString();
+        return zcore.getDescription().getVersion();
     }
 
     public int fractionalDigits() {
