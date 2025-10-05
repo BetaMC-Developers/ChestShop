@@ -41,6 +41,10 @@ public class Config {
         return getColored(config.getLanguageConfig().getString(Language.prefix.name()) + config.getLanguageConfig().getString(lang.name()));
     }
 
+    public static String getLocalNoPrefix(Language lang) {
+        return getColored(config.getLanguageConfig().getString(lang.name()));
+    }
+
     private static Object getValue(String node) {
         return config.getProperty(node);
     }

@@ -40,6 +40,12 @@ public enum Language {
     PROTECTED_SHOP("Successfully protected the shop with LWC!"),
     SHOP_CREATED("Shop successfully created!"),
 
+    QUERY_RESULTS("Results (Page %page of %total)"),
+    QUERY_ROW("&6%datetime &b%user &7-> &b%owner &f%mode %amountx %item &a%price"),
+    QUERY_SWITCH("Use '/transactions page <page>' to select a page"),
+    NO_RESULTS_FOR_QUERY("No results found for this query!"),
+    NO_QUERY("You haven't made a query yet!"),
+
     NO_PERMISSION("You don't have permissions to do that!"),
     INCORRECT_ITEM_ID("You have specified invalid item id!");
 
