@@ -40,6 +40,7 @@ public enum Language {
     PROTECTED_SHOP("Successfully protected the shop with LWC!"),
     SHOP_CREATED("Shop successfully created!"),
 
+    QUERY_DB_LOG_DISABLED("To use this command, please enable the LOG_TO_DATABASE option inside the ChestShop configuration file."),
     QUERY_RESULTS("Results (Page %page of %total)"),
     QUERY_ROW("&6%datetime &b%user &7-> &b%owner &f%mode %amountx %item &a%price"),
     QUERY_SWITCH("Use '/transactions page <page>' to select a page"),
