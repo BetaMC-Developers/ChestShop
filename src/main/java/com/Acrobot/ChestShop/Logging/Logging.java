@@ -37,7 +37,7 @@ public class Logging {
     }
 
     public static void logTradeTransaction(Shop shop, Player player, String itemGiven) {
-        log(player.getName() + " traded " + shop.stockAmount + ' ' + shop.stock.getType() + " for " + itemGiven + " with " + shop.owner + "'s shop");
+        log(player.getName() + " traded " + itemGiven + " for " + shop.stockAmount + ' ' + shop.stock.getType() + " at " + shop.owner + "'s shop");
         if (Config.getBoolean(Property.LOG_TO_DATABASE) || Config.getBoolean(Property.GENERATE_STATISTICS_PAGE)) logToDatabase(true, shop, player);
     }
 
