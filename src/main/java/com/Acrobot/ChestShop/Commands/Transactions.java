@@ -3,6 +3,7 @@ package com.Acrobot.ChestShop.Commands;
 import com.Acrobot.ChestShop.ChestShop;
 import com.Acrobot.ChestShop.Config.Config;
 import com.Acrobot.ChestShop.Config.Language;
+import com.Acrobot.ChestShop.Config.Property;
 import com.Acrobot.ChestShop.DB.Transaction;
 import com.Acrobot.ChestShop.Economy;
 import com.avaje.ebean.PagingList;
@@ -11,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -29,10 +31,26 @@ public class Transactions implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        ArrayDeque<String> argsQueue = new ArrayDeque<>(Arrays.asList(args));
-        if (argsQueue.isEmpty()) return false;
+        if (!Config.getBoolean(Property.LOG_TO_DATABASE)) {
+            sender.sendMessage(Config.getLocal(Language.QUERY_DB_LOG_DISABLED));
+            return true;
+        }
 
-        if (argsQueue.peek().equalsIgnoreCase("page")) {
+        ArrayDeque<String> argsQueue = new ArrayDeque<>(Arrays.asList(args));
+        if (argsQueue.isEmpty()) {
+            if (sender instanceof Player) {
+                String playerUsername = ((Player) sender).getName();
+
+                sender.sendMessage(Config.getLocal(Language.QUERY_SEE_MORE_OPTIONS).replace("%user", playerUsername));
+
+                argsQueue.add("to");
+                argsQueue.add(playerUsername);
+            }
+            else {
+                return false;
+            }
+        }
+        else if (argsQueue.peek().equalsIgnoreCase("page")) {
             int index;
             try {
                 index = getIndex(argsQueue);

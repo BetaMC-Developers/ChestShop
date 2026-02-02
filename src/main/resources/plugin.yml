@@ -25,7 +25,7 @@ commands:
     usage: |
            /<command> [from <player>] [to <player>] [before <yyyy-MM-dd>] [after <yyyy-MM-dd>]
            /<command> page <page>
-    aliases: [ta]
+    aliases: [ta, shophistory]
 
   csVersion:
     description: Shows the ChestShop's version
