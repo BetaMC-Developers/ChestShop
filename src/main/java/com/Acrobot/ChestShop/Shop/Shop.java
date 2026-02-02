@@ -285,7 +285,7 @@ public class Shop {
 
         uInventory.remove(player.getInventory(), itemStack, amount, itemStack.getDurability());
         uInventory.add(player.getInventory(), stock, stockAmount);
-        Logging.logTransaction(true, this, player);
+        Logging.logTradeTransaction(this, player, formattedItem);
         player.updateInventory();
 
         if (Config.getBoolean(Property.SHOW_TRANSACTION_INFORMATION_OWNER)) {

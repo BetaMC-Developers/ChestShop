@@ -36,6 +36,11 @@ public class Logging {
         if (Config.getBoolean(Property.LOG_TO_DATABASE) || Config.getBoolean(Property.GENERATE_STATISTICS_PAGE)) logToDatabase(isBuying, shop, player);
     }
 
+    public static void logTradeTransaction(Shop shop, Player player, String itemGiven) {
+        log(player.getName() + " traded " + itemGiven + " for " + shop.stockAmount + ' ' + shop.stock.getType() + " at " + shop.owner + "'s shop");
+        if (Config.getBoolean(Property.LOG_TO_DATABASE) || Config.getBoolean(Property.GENERATE_STATISTICS_PAGE)) logToDatabase(true, shop, player);
+    }
+
     public static void logActivation(Player player, String owner, float buyPrice) {
         log(player.getName() + " activated " + owner + "'s sign for " + buyPrice);
     }
