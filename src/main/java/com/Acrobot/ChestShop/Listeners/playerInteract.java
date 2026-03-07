@@ -7,6 +7,7 @@ import com.Acrobot.ChestShop.Data.ShopLocation;
 import com.Acrobot.ChestShop.Data.Shops;
 import com.Acrobot.ChestShop.Permission;
 import com.Acrobot.ChestShop.Protection.Plugins.Default;
+import com.Acrobot.ChestShop.Protection.Security;
 import com.Acrobot.ChestShop.Shop.ShopManagement;
 import com.Acrobot.ChestShop.Signs.restrictedSign;
 import com.Acrobot.ChestShop.Utils.uBlock;
@@ -119,6 +120,20 @@ public class playerInteract extends PlayerListener {
         if (chest == null) { //Sorry, no chest found
             player.sendMessage(Config.getLocal(Language.NO_CHEST_DETECTED));
             return;
+        } else if (!Permission.has(player, Permission.ADMIN)) {
+            Block chestBlock = chest.getBlock();
+            boolean canAccess = !Security.isProtected(chestBlock) || Security.canAccess(player, chestBlock);
+
+            if (!(Security.protection instanceof Default) && canAccess) {
+                Default protection = new Default();
+                if (protection.isProtected(chestBlock) && !protection.canAccess(player, chestBlock))
+                    canAccess = false;
+            }
+
+            if (!canAccess) {
+                player.sendMessage(Config.getLocal(Language.CANNOT_ACCESS_THE_CHEST));
+                return;
+            }
         }
 
         IInventory inventory = ((CraftInventory) chest.getInventory()).getInventory();
