@@ -93,6 +93,7 @@ public class ChestShop extends JavaPlugin {
         blockBreak blockBreak = new blockBreak();
         registerEvent(Event.Type.BLOCK_BREAK, blockBreak);
         registerEvent(Event.Type.BLOCK_PLACE, new blockPlace());
+        registerEvent(Event.Type.BLOCK_PHYSICS, new blockPhysics());
         registerEvent(Event.Type.SIGN_CHANGE, new signChange());
         registerEvent(Event.Type.PLAYER_LOGIN, new playerLogin(), Event.Priority.Monitor);
         registerEvent(Event.Type.PLAYER_INTERACT, new playerInteract(), Event.Priority.Highest);
