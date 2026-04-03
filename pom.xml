@@ -6,7 +6,7 @@
 
     <groupId>com.Acrobot.ChestShop</groupId>
     <artifactId>ChestShop</artifactId>
-    <version>3.13</version>
+    <version>3.14</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
