@@ -2,6 +2,7 @@ package com.Acrobot.ChestShop.Utils;
 
 import com.Acrobot.ChestShop.Config.Config;
 import com.Acrobot.ChestShop.Config.Property;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 
@@ -26,7 +27,8 @@ public class uSign {
     };
 
     public static boolean isSign(Block block) {
-        return block.getState() instanceof Sign;
+        // DO NOT CALL block.getState() here if you value your life! It causes infinite recursion because ChestShop is jank!
+        return block.getType() == Material.SIGN_POST || block.getType() == Material.WALL_SIGN;
     }
 
     public static boolean isAdminShop(String owner) {
