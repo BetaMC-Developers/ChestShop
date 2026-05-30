@@ -23,6 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
+import java.util.HashSet;
 
 /**
  * @author Acrobot
@@ -210,24 +211,22 @@ public class Shop {
         return chest.hasEnough(stock, stockAmount, durability);
     }
 
+    private static final HashSet<Integer> durabilityItemIds = new HashSet<Integer>(){{
+        add(256); add(257); add(258); add(259); add(267); add(268); add(269); add(270);
+        add(271); add(272); add(273); add(274); add(275); add(276); add(277); add(278);
+        add(279); add(283); add(284); add(285); add(286); add(290); add(291); add(292);
+        add(293); add(294); add(298); add(299); add(300); add(301); add(302); add(303);
+        add(304); add(305); add(306); add(307); add(308); add(309); add(310); add(311);
+        add(312); add(313); add(314); add(315); add(316); add(317); add(346); add(359);
+    }};
+
     private boolean checkForDurabilityItemStack(Player player) {
         if (durability != 0 && stockAmount > 1) {
             int itemId = stock.getTypeId();
 
-            final int[] durabilityItemIds = {
-                    256, 257, 258, 259, 267, 268, 269, 270,
-                    271, 272, 273, 274, 275, 276, 277, 278,
-                    279, 283, 284, 285, 286, 290, 291, 292,
-                    293, 294, 298, 299, 300, 301, 302, 303,
-                    304, 305, 306, 307, 308, 309, 310, 311,
-                    312, 313, 314, 315, 316, 317, 346, 359
-            };
-
-            for (int itemIdFromArr : durabilityItemIds) {
-                if (itemIdFromArr == itemId) {
-                    player.sendMessage(Config.getLocal(Language.YOU_CANNOT_BUY_SELL_STACKED_DURABILITY_ITEMS));
-                    return true;
-                }
+            if (durabilityItemIds.contains(itemId)) {
+                player.sendMessage(Config.getLocal(Language.YOU_CANNOT_BUY_SELL_STACKED_DURABILITY_ITEMS));
+                return true;
             }
         }
         return false;
