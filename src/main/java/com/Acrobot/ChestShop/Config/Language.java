@@ -32,6 +32,7 @@ public enum Language {
     YOU_SOLD_TO_SHOP("You sold %amount %item to %buyer for %price."),
     SOMEBODY_SOLD_TO_YOUR_SHOP("%seller sold %amount %item for %price to you."),
 
+    YOU_CANNOT_BUY_SELL_STACKED_DURABILITY_ITEMS("You cannot buy or sell stacked items with a durability!"),
     YOU_CANNOT_CREATE_SHOP("You can't create this type of shop!"),
     NO_CHEST_DETECTED("Couldn't find a chest!"),
     ANOTHER_SHOP_DETECTED("Another player's shop detected!"),

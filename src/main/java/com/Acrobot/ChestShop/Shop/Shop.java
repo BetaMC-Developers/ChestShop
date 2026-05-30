@@ -87,6 +87,9 @@ public class Shop {
             player.sendMessage(Config.getLocal(Language.NOT_ENOUGH_SPACE_IN_INVENTORY));
             return;
         }
+        if (checkForDurabilityItemStack(player)) {
+            return;
+        }
 
         String materialName = stock.getType().name();
 
@@ -157,12 +160,14 @@ public class Shop {
             player.sendMessage(Config.getLocal(Language.NOT_ENOUGH_SPACE_IN_CHEST));
             return;
         }
+        if (checkForDurabilityItemStack(player)) {
+            return;
+        }
 
         if (uInventory.amount(player.getInventory(), stock, durability) < stockAmount) {
             player.sendMessage(Config.getLocal(Language.NOT_ENOUGH_ITEMS_TO_SELL));
             return;
         }
-
 
         if (accountExists) Economy.substract(account, sellPrice, world);
         if (!isAdminShop()) chest.addItem(stock, stockAmount);
@@ -203,6 +208,29 @@ public class Shop {
 
     private boolean hasEnoughStock() {
         return chest.hasEnough(stock, stockAmount, durability);
+    }
+
+    private boolean checkForDurabilityItemStack(Player player) {
+        if (durability != 0 && stockAmount > 1) {
+            int itemId = stock.getTypeId();
+
+            final int[] durabilityItemIds = {
+                    256, 257, 258, 259, 267, 268, 269, 270,
+                    271, 272, 273, 274, 275, 276, 277, 278,
+                    279, 283, 284, 285, 286, 290, 291, 292,
+                    293, 294, 298, 299, 300, 301, 302, 303,
+                    304, 305, 306, 307, 308, 309, 310, 311,
+                    312, 313, 314, 315, 316, 317, 346, 359
+            };
+
+            for (int itemIdFromArr : durabilityItemIds) {
+                if (itemIdFromArr == itemId) {
+                    player.sendMessage(Config.getLocal(Language.YOU_CANNOT_BUY_SELL_STACKED_DURABILITY_ITEMS));
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean stockFitsPlayer(Player player) {
@@ -266,6 +294,9 @@ public class Shop {
 
         if (!isAdminShop() && !chest.fits(itemStack, amount, itemStack.getDurability())) {
             player.sendMessage(Config.getLocal(Language.NOT_ENOUGH_SPACE_IN_CHEST));
+            return;
+        }
+        if (checkForDurabilityItemStack(player)) {
             return;
         }
 
