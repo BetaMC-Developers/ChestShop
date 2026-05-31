@@ -17,18 +17,37 @@ import com.Acrobot.ChestShop.Utils.uLongName;
 import com.Acrobot.ChestShop.Utils.uNumber;
 import com.Acrobot.ChestShop.Utils.uSign;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Set;
 import java.util.UUID;
-import java.util.HashSet;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Acrobot
  */
 public class Shop {
+
+    private static final Set<Material> itemsWithDurability = Stream.of(
+            Material.IRON_SPADE, Material.IRON_PICKAXE, Material.IRON_AXE, Material.FLINT_AND_STEEL,
+            Material.IRON_SWORD, Material.WOOD_SWORD, Material.WOOD_SPADE, Material.WOOD_PICKAXE,
+            Material.WOOD_AXE, Material.STONE_SWORD, Material.STONE_SPADE, Material.STONE_PICKAXE,
+            Material.STONE_AXE, Material.DIAMOND_SWORD, Material.DIAMOND_SPADE, Material.DIAMOND_PICKAXE,
+            Material.DIAMOND_AXE, Material.GOLD_SWORD, Material.GOLD_SPADE, Material.GOLD_PICKAXE,
+            Material.GOLD_AXE, Material.WOOD_HOE, Material.STONE_HOE, Material.IRON_HOE,
+            Material.DIAMOND_HOE, Material.GOLD_HOE, Material.LEATHER_HELMET, Material.LEATHER_CHESTPLATE,
+            Material.LEATHER_LEGGINGS, Material.LEATHER_BOOTS, Material.CHAINMAIL_HELMET, Material.CHAINMAIL_CHESTPLATE,
+            Material.CHAINMAIL_LEGGINGS, Material.CHAINMAIL_BOOTS, Material.IRON_HELMET, Material.IRON_CHESTPLATE,
+            Material.IRON_LEGGINGS, Material.IRON_BOOTS, Material.DIAMOND_HELMET, Material.DIAMOND_CHESTPLATE,
+            Material.DIAMOND_LEGGINGS, Material.DIAMOND_BOOTS, Material.GOLD_HELMET, Material.GOLD_CHESTPLATE,
+            Material.GOLD_LEGGINGS, Material.GOLD_BOOTS, Material.FISHING_ROD, Material.SHEARS
+    ).collect(Collectors.toSet());
+
     private final short durability;
     private final ChestObject chest;
 
@@ -88,7 +107,8 @@ public class Shop {
             player.sendMessage(Config.getLocal(Language.NOT_ENOUGH_SPACE_IN_INVENTORY));
             return;
         }
-        if (checkForDurabilityItemStack(player)) {
+        if (stockIsMultipleAndHasDurability()) {
+            player.sendMessage(Config.getLocal(Language.YOU_CANNOT_BUY_SELL_STACKED_DURABILITY_ITEMS));
             return;
         }
 
@@ -161,7 +181,8 @@ public class Shop {
             player.sendMessage(Config.getLocal(Language.NOT_ENOUGH_SPACE_IN_CHEST));
             return;
         }
-        if (checkForDurabilityItemStack(player)) {
+        if (stockIsMultipleAndHasDurability()) {
+            player.sendMessage(Config.getLocal(Language.YOU_CANNOT_BUY_SELL_STACKED_DURABILITY_ITEMS));
             return;
         }
 
@@ -211,25 +232,8 @@ public class Shop {
         return chest.hasEnough(stock, stockAmount, durability);
     }
 
-    private static final HashSet<Integer> durabilityItemIds = new HashSet<Integer>(){{
-        add(256); add(257); add(258); add(259); add(267); add(268); add(269); add(270);
-        add(271); add(272); add(273); add(274); add(275); add(276); add(277); add(278);
-        add(279); add(283); add(284); add(285); add(286); add(290); add(291); add(292);
-        add(293); add(294); add(298); add(299); add(300); add(301); add(302); add(303);
-        add(304); add(305); add(306); add(307); add(308); add(309); add(310); add(311);
-        add(312); add(313); add(314); add(315); add(316); add(317); add(346); add(359);
-    }};
-
-    private boolean checkForDurabilityItemStack(Player player) {
-        if (durability != 0 && stockAmount > 1) {
-            int itemId = stock.getTypeId();
-
-            if (durabilityItemIds.contains(itemId)) {
-                player.sendMessage(Config.getLocal(Language.YOU_CANNOT_BUY_SELL_STACKED_DURABILITY_ITEMS));
-                return true;
-            }
-        }
-        return false;
+    private boolean stockIsMultipleAndHasDurability() {
+        return durability != 0 && stockAmount > 1 && itemsWithDurability.contains(stock.getType());
     }
 
     private boolean stockFitsPlayer(Player player) {
@@ -295,7 +299,8 @@ public class Shop {
             player.sendMessage(Config.getLocal(Language.NOT_ENOUGH_SPACE_IN_CHEST));
             return;
         }
-        if (checkForDurabilityItemStack(player)) {
+        if (stockIsMultipleAndHasDurability()) {
+            player.sendMessage(Config.getLocal(Language.YOU_CANNOT_BUY_SELL_STACKED_DURABILITY_ITEMS));
             return;
         }
 
