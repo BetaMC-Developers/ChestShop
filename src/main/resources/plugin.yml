@@ -2,7 +2,7 @@ name: ChestShop
 
 main: com.Acrobot.ChestShop.ChestShop
 
-version: 3.16
+version: ${project.version}
 
 
 author: Acrobot
@@ -58,7 +58,7 @@ permissions:
   ChestShop.shop.sell:
     description: Allows user to sell to a shop
   ChestShop.admin:
-    description: Allows user to modify/destroy other stores and create an Admin Shops
+    description: Allows user to modify/destroy other stores
     default: op
   ChestShop.mod:
-    description: Allows user only to view other store chests, he can't destroy them or create an Admin Shop
+    description: Allows user only to view other store chests

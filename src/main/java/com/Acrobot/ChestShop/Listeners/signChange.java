@@ -92,7 +92,13 @@ public class signChange extends BlockListener {
         Chest chest = uBlock.findChest(signBlock);
 
         boolean isAdminShop = uSign.isAdminShop(event.getLine(0));
-        if (!isAdminShop) {
+        if (isAdminShop) {
+            if (!player.isOp()) {
+                dropSign(event);
+                player.sendMessage(Config.getLocal(Language.YOU_CANNOT_CREATE_SHOP));
+                return;
+            }
+        } else {
             if (isRedstoneSign) {
                 if (!playerIsAdmin) {
                     if (!Security.canPlaceSign(player, signBlock)) {
