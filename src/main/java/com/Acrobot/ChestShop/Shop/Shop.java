@@ -17,17 +17,37 @@ import com.Acrobot.ChestShop.Utils.uLongName;
 import com.Acrobot.ChestShop.Utils.uNumber;
 import com.Acrobot.ChestShop.Utils.uSign;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Acrobot
  */
 public class Shop {
+
+    private static final Set<Material> itemsWithDurability = Stream.of(
+            Material.IRON_SPADE, Material.IRON_PICKAXE, Material.IRON_AXE, Material.FLINT_AND_STEEL,
+            Material.IRON_SWORD, Material.WOOD_SWORD, Material.WOOD_SPADE, Material.WOOD_PICKAXE,
+            Material.WOOD_AXE, Material.STONE_SWORD, Material.STONE_SPADE, Material.STONE_PICKAXE,
+            Material.STONE_AXE, Material.DIAMOND_SWORD, Material.DIAMOND_SPADE, Material.DIAMOND_PICKAXE,
+            Material.DIAMOND_AXE, Material.GOLD_SWORD, Material.GOLD_SPADE, Material.GOLD_PICKAXE,
+            Material.GOLD_AXE, Material.WOOD_HOE, Material.STONE_HOE, Material.IRON_HOE,
+            Material.DIAMOND_HOE, Material.GOLD_HOE, Material.LEATHER_HELMET, Material.LEATHER_CHESTPLATE,
+            Material.LEATHER_LEGGINGS, Material.LEATHER_BOOTS, Material.CHAINMAIL_HELMET, Material.CHAINMAIL_CHESTPLATE,
+            Material.CHAINMAIL_LEGGINGS, Material.CHAINMAIL_BOOTS, Material.IRON_HELMET, Material.IRON_CHESTPLATE,
+            Material.IRON_LEGGINGS, Material.IRON_BOOTS, Material.DIAMOND_HELMET, Material.DIAMOND_CHESTPLATE,
+            Material.DIAMOND_LEGGINGS, Material.DIAMOND_BOOTS, Material.GOLD_HELMET, Material.GOLD_CHESTPLATE,
+            Material.GOLD_LEGGINGS, Material.GOLD_BOOTS, Material.FISHING_ROD, Material.SHEARS
+    ).collect(Collectors.toSet());
+
     private final short durability;
     private final ChestObject chest;
 
@@ -85,6 +105,10 @@ public class Shop {
         }
         if (!stockFitsPlayer(player)) {
             player.sendMessage(Config.getLocal(Language.NOT_ENOUGH_SPACE_IN_INVENTORY));
+            return;
+        }
+        if (stockIsMultipleAndHasDurability()) {
+            player.sendMessage(Config.getLocal(Language.YOU_CANNOT_BUY_SELL_STACKED_DURABILITY_ITEMS));
             return;
         }
 
@@ -157,12 +181,15 @@ public class Shop {
             player.sendMessage(Config.getLocal(Language.NOT_ENOUGH_SPACE_IN_CHEST));
             return;
         }
+        if (stockIsMultipleAndHasDurability()) {
+            player.sendMessage(Config.getLocal(Language.YOU_CANNOT_BUY_SELL_STACKED_DURABILITY_ITEMS));
+            return;
+        }
 
         if (uInventory.amount(player.getInventory(), stock, durability) < stockAmount) {
             player.sendMessage(Config.getLocal(Language.NOT_ENOUGH_ITEMS_TO_SELL));
             return;
         }
-
 
         if (accountExists) Economy.substract(account, sellPrice, world);
         if (!isAdminShop()) chest.addItem(stock, stockAmount);
@@ -203,6 +230,10 @@ public class Shop {
 
     private boolean hasEnoughStock() {
         return chest.hasEnough(stock, stockAmount, durability);
+    }
+
+    private boolean stockIsMultipleAndHasDurability() {
+        return durability != 0 && stockAmount > 1 && itemsWithDurability.contains(stock.getType());
     }
 
     private boolean stockFitsPlayer(Player player) {
@@ -266,6 +297,10 @@ public class Shop {
 
         if (!isAdminShop() && !chest.fits(itemStack, amount, itemStack.getDurability())) {
             player.sendMessage(Config.getLocal(Language.NOT_ENOUGH_SPACE_IN_CHEST));
+            return;
+        }
+        if (stockIsMultipleAndHasDurability()) {
+            player.sendMessage(Config.getLocal(Language.YOU_CANNOT_BUY_SELL_STACKED_DURABILITY_ITEMS));
             return;
         }
 
