@@ -29,6 +29,10 @@ import org.bukkit.inventory.ItemStack;
 public class signChange extends BlockListener {
 
     public void onSignChange(SignChangeEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         Block signBlock = event.getBlock();
         String[] line = event.getLines();
 
