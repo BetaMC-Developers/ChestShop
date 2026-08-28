@@ -99,7 +99,7 @@ public final class Shops {
             sign.setLine(0, newUsername);
 
             Arrays.stream(Bukkit.getOnlinePlayers()).forEach(player ->
-                    player.sendPacket(player, new Packet130UpdateSign(it.x, it.y, it.z, sign.getLines()))
+                    player.getConnection().sendPacket(new Packet130UpdateSign(it.x, it.y, it.z, sign.getLines()))
             );
         });
     }

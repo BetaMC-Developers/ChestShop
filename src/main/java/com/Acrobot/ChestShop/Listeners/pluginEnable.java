@@ -28,9 +28,9 @@ public class pluginEnable extends ServerListener {
     }
 
     public static void initializePlugins() {
-        for (Object plugin : ChestShop.getDependencies()) {
-            Plugin pl = ChestShop.pm.getPlugin((String) plugin);
-            if (pl != null) initializePlugin((String) plugin, pl);
+        for (String plugin : ChestShop.getDependencies()) {
+            Plugin pl = ChestShop.pm.getPlugin(plugin);
+            if (pl != null) initializePlugin(plugin, pl);
         }
     }
 

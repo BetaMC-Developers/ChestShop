@@ -151,7 +151,6 @@ public class ChestShop extends JavaPlugin {
         getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Queue(), 200L, 200L);
     }
 
-    @Override
     public EbeanServer getDatabase() {
         return database.getDatabase();
     }
@@ -173,7 +172,7 @@ public class ChestShop extends JavaPlugin {
         return DB;
     }
 
-    public static ArrayList getDependencies() {
-        return (ArrayList) description.getSoftDepend();
+    public static List<String> getDependencies() {
+        return description.getSoftDepend();
     }
 }

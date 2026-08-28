@@ -128,8 +128,6 @@ public abstract class Database {
     private void loadDatabase() {
         //Declare a few local variables for later use
         ClassLoader currentClassLoader = null;
-        Field cacheField = null;
-        boolean cacheValue = true;
 
         try {
             //Store the current ClassLoader, so it can be reverted later
@@ -138,14 +136,6 @@ public abstract class Database {
             //Set the ClassLoader to Plugin ClassLoader
             Thread.currentThread().setContextClassLoader(classLoader);
 
-            //Get a reference to the private static "defaultUseCaches"-field in URLConnection
-            cacheField = URLConnection.class.getDeclaredField("defaultUseCaches");
-
-            //Make it accessible, store the default value and set it to false
-            cacheField.setAccessible(true);
-            cacheValue = cacheField.getBoolean(null);
-            cacheField.setBoolean(null, false);
-
             //Setup Ebean based on the configuration
             ebeanServer = EbeanServerFactory.create(serverConfig);
         } catch (Exception ex) {
@@ -153,13 +143,6 @@ public abstract class Database {
         } finally {
             //Revert the ClassLoader back to its original value
             if (currentClassLoader != null) Thread.currentThread().setContextClassLoader(currentClassLoader);
-
-            //Revert the "defaultUseCaches"-field in URLConnection back to its original value
-            try {
-                if (cacheField != null) cacheField.setBoolean(null, cacheValue);
-            } catch (Exception e) {
-                System.out.println("Failed to revert the \"defaultUseCaches\"-field back to its original value, URLConnection-caching remains disabled.");
-            }
         }
     }
 
